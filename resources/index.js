@@ -9,10 +9,11 @@ export default function() {
 	var api = Router();
 
     /** Routes without auth check */
-	api.use('/auth', new AuthController().route());
-    api.use('/users', new UserController().route());
+    api.use('/auth', new AuthController().auth());
+    api.use('/register', new AuthController().register());
 
     /** Routes need auth */
+    api.use('/users', isAuth, new UserController().route());
     api.use('/scrumboards', isAuth, new ScrumboardController().route());
 
 	return api;
