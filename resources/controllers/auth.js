@@ -2,7 +2,7 @@ import { Router } from 'express';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import { User } from '../../models/user';
-import { UserController } from '../controllers';
+import { UserController } from '../controllers/user';
 import { ok, fail } from './utils';
 import app from '../../server';
 

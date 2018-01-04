@@ -44,7 +44,6 @@ export default class BaseController{
     });
   }
 
-
   list() {
     return this.model
       .find({})
@@ -66,7 +65,6 @@ export default class BaseController{
         return {};
       })
   }
-
 
   /**
    */

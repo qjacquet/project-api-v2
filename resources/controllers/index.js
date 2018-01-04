@@ -1,14 +1,7 @@
-import BaseController              from './base';
-import { User, Scrumboard } from '../../models';
+import { UserController } from './user';
+import { ScrumboardController } from './scrumboard';
 
-export class UserController extends BaseController{
-  constructor(){
-    super(User, '_id');
-  }
-}
-
-export class ScrumboardController extends BaseController{
-  constructor(){
-    super(Scrumboard, '_id');
-  }
+export {
+  UserController,
+  ScrumboardController
 }
