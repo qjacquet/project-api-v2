@@ -16,7 +16,7 @@ export class ScrumboardController extends BaseController{
     listByUser(userId) {
       return Scrumboard
         .find({
-          'cards.idMembers' : userId
+          'members._id' : mongoose.Types.ObjectId(userId)
         })
         .limit(MAX_RESULTS)
         .then((modelInstances) => {

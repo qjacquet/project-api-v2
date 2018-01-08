@@ -34,7 +34,8 @@ const ScrumboardSchema = new mongoose.Schema({
         id: String,
         firstName: String,
         lastName: String,
-        avatar: String
+        avatar: String,
+        owner: Boolean
     }],
     labels: [{ 
         id: String,
