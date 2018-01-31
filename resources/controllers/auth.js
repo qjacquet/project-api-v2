@@ -8,79 +8,82 @@ import app from '../../server';
 
 export class AuthController {
 
-    constructor() {
-    }
+	constructor() {
+	}
 
-    auth() {
-        const router = new Router();
+	auth() {
+		const router = new Router();
 
-        router.post("/", (req, res) => {
-            User.findOne({ login: req.body.login }, function (err, user) {
-                if (err) throw err;
+		router.post("/", (req, res) => {
+			User.findOne({ login: req.body.login }, function (err, user) {
+				if (err) throw err;
 
-                if (!user) {
-                    res.json({ success: false, message: 'Authentication failed. User not found.' });
-                }
-                else if (user) {
+				if (!user) {
+					res.json({ success: false, message: 'Authentication failed. User not found.' });
+				}
+				else if (user) {
 
-                    /** Compare input password to hashed stored password */
-                    user.comparePassword(req.body.password, function (isMatch) {
-                        if (!isMatch)
-                            res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-                        else {
-									/** Save user status = online */
-									User.update({_id:user._id}, {$set: { "status": 1}}).exec();
+					/** Compare input password to hashed stored password */
+					user.comparePassword(req.body.password, function (isMatch) {
+						if (!isMatch)
+							res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+						else {
+							/** Save user status = online */
+							User.update({ _id: user._id }, { $set: { "status": 1 } }).exec();
 
-                            /** Set token and payload for other user infos */
-                            var payload = {
-                                id: user._id,
-                                firstName: user.firstName,
-                                lastName: user.lastName,
-                                avatar: user.avatar,
-                                admin: user.admin,
-                                status: 1
-                            };
-                            var token = jwt.sign(payload, app.get('secretToken'), {
-                                expiresIn: 60 * 60 * 24 // expires in 24 hours
-                            });
+							/** Set token and payload for other user infos */
+							var payload = {
+								id: user._id,
+								firstName: user.firstName,
+								lastName: user.lastName,
+								avatar: user.avatar,
+								admin: user.admin,
+								status: 1
+							};
+							var token = jwt.sign(payload, app.get('secretToken'), {
+								expiresIn: 60 * 60 * 24 // expires in 24 hours
+							});
 
-                            /** Return token */
-                            res.json({
-                                success: true,
-                                message: 'Enjoy your token!',
-                                token: token
-                            });
-                        }
-                    });
-                }
-            });
-        });
+							/** Return token */
+							res.json({
+								success: true,
+								message: 'Enjoy your token!',
+								token: token
+							});
+						}
+					});
+				}
+			});
+		});
 
-        return router;
-    }
+		return router;
+	}
 
-    register() {
-        const router = new Router();
-        const userController = new UserController();
-
-        router.post("/", (req, res) => {
-            userController
-                .create(req.body)
-                .then(ok(res))
-                .then(null, fail(res));
-        });
-
-        return router;
-	 }
-	 
-	 logout() {
+	register() {
 		const router = new Router();
 		const userController = new UserController();
 
 		router.post("/", (req, res) => {
-			User.update({_id:req._id}, {$set: { "status": 0}}).exec();
+			userController
+				.create(req.body)
+				.then(ok(res))
+				.then(null, fail(res));
 		});
 
 		return router;
-  }
+	}
+
+	logout() {
+		const router = new Router();
+		const userController = new UserController();
+
+		router.post("/", (req, res) => {
+			userController
+				.update({ _id: req.body.id }, { $set: { "status": 0 } })
+				.then(ok(res))
+				.then(null, fail(res));
+		});
+
+		return router;
+	}
 }
