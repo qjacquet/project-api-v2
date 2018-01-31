@@ -35,6 +35,7 @@ export class AuthController {
                                 lastName: user.lastName,
                                 avatar: user.avatar,
                                 admin: user.admin,
+                                status: user.status
                             };
                             var token = jwt.sign(payload, app.get('secretToken'), {
                                 expiresIn: 60 * 60 * 24 // expires in 24 hours

@@ -11,7 +11,8 @@ const UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     avatar: String,
-    admin: Boolean
+    admin: Boolean,
+    status: String
 });
 
 UserSchema.pre('save', function(next) {
