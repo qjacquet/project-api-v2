@@ -12,7 +12,9 @@ export default function() {
     api.use('/auth', new AuthController().auth());
     api.use('/register', new AuthController().register());
 
-    /** Routes need auth */
+	 /** Routes need auth */
+	 api.use('/logout', isAuth, new AuthController().logout());
+	 
     api.use('/users', isAuth, new UserController().route());
     api.use('/scrumboards', isAuth, new ScrumboardController().route());
     api.use('/files', isAuth, new FileController().route());

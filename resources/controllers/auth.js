@@ -28,6 +28,9 @@ export class AuthController {
                         if (!isMatch)
                             res.json({ success: false, message: 'Authentication failed. Wrong password.' });
                         else {
+									/** Save user status = online */
+									User.update({_id:user._id}, {$set: { "status": 1}}).exec();
+
                             /** Set token and payload for other user infos */
                             var payload = {
                                 id: user._id,
@@ -35,7 +38,7 @@ export class AuthController {
                                 lastName: user.lastName,
                                 avatar: user.avatar,
                                 admin: user.admin,
-                                status: user.status
+                                status: 1
                             };
                             var token = jwt.sign(payload, app.get('secretToken'), {
                                 expiresIn: 60 * 60 * 24 // expires in 24 hours
@@ -68,5 +71,16 @@ export class AuthController {
         });
 
         return router;
-    }
+	 }
+	 
+	 logout() {
+		const router = new Router();
+		const userController = new UserController();
+
+		router.post("/", (req, res) => {
+			User.update({_id:req._id}, {$set: { "status": 0}}).exec();
+		});
+
+		return router;
+  }
 }

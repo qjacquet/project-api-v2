@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
     lastName: String,
     avatar: String,
     admin: Boolean,
-    status: String
+    status: Number
 });
 
 UserSchema.pre('save', function(next) {
