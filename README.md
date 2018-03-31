@@ -1,6 +1,6 @@
 # project-api
 
-Api for angular-material-dashboard
+Api for project-app
 
 # prerequisites
 
